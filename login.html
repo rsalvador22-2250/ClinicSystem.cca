@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Clinic Access | SASO System</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="download-Photoroom.png" sizes="96x96" />
+    <link rel="icon" type="image/png" sizes="32x32" href="download-Photoroom.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="download-Photoroom.png">
+    <link rel="icon" href="download-Photoroom.png" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/download-Photoroom.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="download-Photoroom.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="download-Photoroom.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="download-Photoroom.png">
+<link rel="icon" type="school logo-Photoroom" href="download-Photoroom.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== CSS RESET & VARIABLES ===== */
+:root {
+    --primary: #2E7D32;
+    --primary-light: #4CAF50;
+    --primary-dark: #1B5E20;
+    --accent: #0288D1;
+    --accent-light: #03A9F4;
+    --light-bg: #F5F9F6;
+    --card-bg: #FFFFFF;
+    --text: #2D3748;
+    --text-light: #718096;
+    --border: #E2E8F0;
+    --success: #10B981;
+    --error: #EF4444;
+    --warning: #F59E0B;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f0f9f0 0%, #e6f7e6 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ===== BACKGROUND DECORATION ===== */
+.bg-decoration {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(46, 125, 50, 0.05);
+}
+
+.circle-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    right: -100px;
+}
+
+.circle-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -80px;
+    left: -80px;
+    background: rgba(2, 136, 209, 0.05);
+}
+
+.circle-3 {
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    left: 10%;
+    background: rgba(76, 175, 80, 0.05);
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    min-height: 600px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    background: var(--card-bg);
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== LEFT PANEL - INFO ===== */
+.info-panel {
+    flex: 1;
+    background: linear-gradient(145deg, var(--primary-dark), var(--primary));
+    color: white;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.info-panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M0,0 L100,100 M0,100 L100,0" stroke="white" stroke-width="0.5" opacity="0.05"/></svg>');
+    background-size: 100px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    z-index: 1;
+    position: relative;
+}
+
+.logo-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.logo-text h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.logo-text p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.info-content {
+    z-index: 1;
+    position: relative;
+}
+
+.info-content h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.info-content p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    opacity: 0.9;
+    max-width: 90%;
+}
+
+.feature-list {
+    list-style: none;
+    margin-top: 30px;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.feature-list i {
+    background: rgba(255, 255, 255, 0.15);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.security-note {
+    margin-top: auto;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.85rem;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===== RIGHT PANEL - LOGIN FORM ===== */
+.login-panel {
+    flex: 1;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-header h2 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.login-header p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* ===== FORM STYLES ===== */
+.form-container {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.input-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-light);
+    font-size: 1.1rem;
+    z-index: 1;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 15px 14px 45px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background-color: white;
+    transition: var(--transition);
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+.input-wrapper input::placeholder {
+    color: #A0AEC0;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 75%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.toggle-password:hover {
+    color: var(--primary);
+    background-color: rgba(46, 125, 50, 0.05);
+}
+
+/* ===== REMEMBER ME ===== */
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.remember-me input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* ===== BUTTONS ===== */
+.login-button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(to right, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.login-button:hover {
+    background: linear-gradient(to right, var(--primary-dark), var(--primary));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(46, 125, 50, 0.4);
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===== ERROR MESSAGE ===== */
+#error {
+    min-height: 24px;
+    margin-top: 15px;
+    padding: 12px 15px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.error-msg {
+    background-color: #FEF2F2;
+    color: var(--error);
+    border-left: 4px solid var(--error);
+}
+
+.success-msg {
+    background-color: #F0FDF4;
+    color: var(--success);
+    border-left: 4px solid var(--success);
+}
+
+.info-msg {
+    background-color: #EFF6FF;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+}
+
+/* ===== FOOTER ===== */
+.login-footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-light);
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        max-width: 500px;
+        min-height: auto;
+    }
+    
+    .info-panel {
+        padding: 40px 30px;
+    }
+    
+    .login-panel {
+        padding: 40px 30px;
+    }
+    
+    .form-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        border-radius: 12px;
+    }
+    
+    .info-panel, .login-panel {
+        padding: 30px 25px;
+    }
+    
+    .logo-text h1 {
+        font-size: 1.4rem;
+    }
+    
+    .info-content h2, .login-header h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s ease;
+}
+
+/* ===== PASSWORD VISIBILITY ICON ===== */
+.eye-icon {
+    display: inline-block;
+    position: relative;
+    width: 24px;
+    height: 24px;
+}
+
+.eye-icon i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.2s ease;
+}
+
+.eye-icon .fa-eye {
+    opacity: 1;
+}
+
+.eye-icon .fa-eye-slash {
+    opacity: 0;
+}
+
+.eye-icon.show-password .fa-eye {
+    opacity: 0;
+}
+
+.eye-icon.show-password .fa-eye-slash {
+    opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<!-- Background decoration -->
+<div class="bg-decoration">
+    <div class="bg-circle circle-1"></div>
+    <div class="bg-circle circle-2"></div>
+    <div class="bg-circle circle-3"></div>
+</div>
+
+<!-- Main container -->
+<div class="container fade-in">
+    <!-- Left Info Panel -->
+    <div class="info-panel">
+        <div class="logo-section">
+            <img src="download-Photoroom.png" alt="School Clinic Logo" class="logo-img">
+            <div class="logo-text">
+                <h1>CLINIC</h1>
+                <p>Secure Medical System</p>
+            </div>
+        </div>
+        
+        <div class="info-content">
+            <h2>Welcome Back, Administrator</h2>
+            <p>Access the clinic management dashboard to view student medical records, generate reports, and manage clinic operations securely.</p>
+            
+            <ul class="feature-list">
+                <li><i class="fas fa-shield-alt"></i> Enterprise-grade security</li>
+                <li><i class="fas fa-chart-line"></i> Real-time analytics</li>
+                <li><i class="fas fa-file-medical-alt"></i> Complete patient records</li>
+                <li><i class="fas fa-users-cog"></i> Role-based access control</li>
+            </ul>
+        </div>
+        
+        <div class="security-note">
+            <i class="fas fa-lock"></i>
+            <span>Your credentials are encrypted and secured</span>
+        </div>
+    </div>
+    
+    <!-- Right Login Panel -->
+    <div class="login-panel">
+        <div class="login-header">
+            <h2>Secure Sign In</h2>
+            <p>Enter your credentials to access the admin dashboard</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="admin@clinic.example.com" required>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-password" id="togglePassBtn">
+                            <div class="eye-icon">
+                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye-slash"></i>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <span>Remember me</span>
+                </div>
+                
+                <button type="submit" class="login-button" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Sign In to Dashboard</span>
+                </button>
+                
+                <div id="error"></div>
+            </form>
+            
+            <div class="login-footer">
+                <p>© 2026 Clinic System </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, setPersistence, browserSessionPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBhft3v9j2ooODFwL1GiBs97PvCCFuDo6U",
+    authDomain: "clinicsystem-66175.firebaseapp.com",
+    projectId: "clinicsystem-66175",
+    storageBucket: "clinicsystem-66175.appspot.com",
+    messagingSenderId: "572979094042",
+    appId: "1:572979094042:web:2026805fab9c63930ae7a3"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// DOM Elements
+const loginForm = document.getElementById('loginForm');
+const loginBtn = document.getElementById('loginBtn');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const errorDiv = document.getElementById('error');
+const togglePassBtn = document.getElementById('togglePassBtn');
+const eyeIcon = togglePassBtn.querySelector('.eye-icon');
+const rememberMe = document.getElementById('rememberMe');
+
+// Load saved credentials if "Remember me" was checked
+window.addEventListener('DOMContentLoaded', () => {
+    const savedEmail = localStorage.getItem('clinicAdminEmail');
+    const savedRemember = localStorage.getItem('clinicRememberMe');
+    
+    if (savedEmail && savedRemember === 'true') {
+        emailInput.value = savedEmail;
+        rememberMe.checked = true;
+        passwordInput.focus();
+    } else {
+        emailInput.focus();
+    }
+});
+
+// Toggle password visibility with eye icon
+togglePassBtn.addEventListener('click', () => {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    
+    // Toggle eye icon
+    eyeIcon.classList.toggle('show-password');
+});
+
+// Form submission
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    
+    // Validation
+    if (!email || !password) {
+        showError("Please enter both email and password");
+        loginForm.classList.add('shake');
+        setTimeout(() => loginForm.classList.remove('shake'), 500);
+        return;
+    }
+    
+    if (!validateEmail(email)) {
+        showError("Please enter a valid email address");
+        emailInput.focus();
+        return;
+    }
+    
+    // Save email if "Remember me" is checked
+    if (rememberMe.checked) {
+        localStorage.setItem('clinicAdminEmail', email);
+        localStorage.setItem('clinicRememberMe', 'true');
+    } else {
+        localStorage.removeItem('clinicAdminEmail');
+        localStorage.removeItem('clinicRememberMe');
+    }
+    
+    // Set persistence based on "Remember me"
+    try {
+        await setPersistence(auth, rememberMe.checked ? browserLocalPersistence : browserSessionPersistence);
+    } catch (error) {
+        console.error("Error setting persistence:", error);
+    }
+    
+    // Update UI
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Authenticating...</span>';
+    showMessage("Authenticating your credentials...", "info");
+    
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        
+        // Success - redirect to record.html
+        showMessage("✓ Login successful! Redirecting...", "success");
+        loginBtn.innerHTML = '<i class="fas fa-check"></i><span>Login Successful!</span>';
+        
+        // Redirect after a brief delay
+        setTimeout(() => {
+            window.location.href = "record.html";
+        }, 1000);
+        
+    } catch (err) {
+        console.error("Login error:", err);
+        
+        // User-friendly error messages
+        let errorMessage = "Invalid email or password";
+        
+        switch (err.code) {
+            case 'auth/invalid-email':
+                errorMessage = "Invalid email address format";
+                break;
+            case 'auth/user-disabled':
+                errorMessage = "This account has been disabled";
+                break;
+            case 'auth/user-not-found':
+                errorMessage = "No account found with this email";
+                break;
+            case 'auth/wrong-password':
+                errorMessage = "Incorrect password. Please try again";
+                break;
+            case 'auth/too-many-requests':
+                errorMessage = "Too many failed attempts. Try again later";
+                break;
+            case 'auth/network-request-failed':
+                errorMessage = "Network error. Check your connection";
+                break;
+        }
+        
+        showError(errorMessage);
+        loginForm.classList.add('shake');
+        setTimeout(() => loginForm.classList.remove('shake'), 500);
+        
+        // Reset button
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Sign In to Dashboard</span>';
+    }
+});
+
+// Show error message
+function showError(message) {
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+    errorDiv.className = "error-msg fade-in";
+}
+
+// Show info/success message
+function showMessage(message, type = "info") {
+    errorDiv.innerHTML = type === "success" 
+        ? `<i class="fas fa-check-circle"></i> ${message}`
+        : `<i class="fas fa-info-circle"></i> ${message}`;
+    
+    errorDiv.className = `${type}-msg fade-in`;
+}
+
+// Email validation
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+// Enter key to submit form
+passwordInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        loginForm.requestSubmit();
+    }
+});
+</script>
+
+</body>
+</html>
